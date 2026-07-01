@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const app = express();
 
-app.use(express.json());
+app.use(express.static("."));
 
 // Connect to MongoDB
 mongoose
@@ -22,9 +22,16 @@ const User = mongoose.model("User", {
 });
 
 // Get all users
+app.use(express.static("."));
+
+app.get("/", (req, res) => {
+    res.sendFile(process.cwd() + "/index.html");
+});
+
+// Get all users
 app.get("/users", async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+    const users = await User.find();
+    res.json(users);
 });
 
 // Start server
