@@ -1,39 +1,42 @@
 import express from "express";
 import mongoose from "mongoose";
+import path from "path";
 
 const app = express();
 
 app.use(express.static("."));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-  })
-  .catch((err) => {
-    console.error("MongoDB Error:", err);
-  });
+if (process.env.MONGODB_URI) {
+  mongoose
+    .connect(process.env.MONGODB_URI)
+    .then(() => console.log("✅ MongoDB Connected"))
+    .catch((err) => console.error(err));
+}
 
 // User model
-const User = mongoose.model("User", {
-  name: String,
-  email: String,
-});
+const User = mongoose.model(
+  "User",
+  new mongoose.Schema({
+    name: String,
+    email: String,
+  })
+);
 
-// Get all users
-app.use(express.static("."));
-
+// Home page
 app.get("/", (req, res) => {
-    res.sendFile(process.cwd() + "/index.html");
+  res.sendFile(path.join(process.cwd(), "index.html"));
 });
 
-// Get all users
+// API
 app.get("/users", async (req, res) => {
+  try {
     const users = await User.find();
     res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// Start server
-app.listen(3000, () => {
-  console.log("🚀 Server running on http://localhost:3000");
-});
+// IMPORTANT for Vercel
+export default app;
