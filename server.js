@@ -4,39 +4,24 @@ import path from "path";
 
 const app = express();
 
-app.use(express.static("."));
+app.use(express.static(process.cwd()));
 
-// Connect to MongoDB
-if (process.env.MONGODB_URI) {
-  mongoose
-    .connect(process.env.MONGODB_URI)
-    .then(() => console.log("✅ MongoDB Connected"))
-    .catch((err) => console.error(err));
-}
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch(err => console.log(err));
 
-// User model
-const User = mongoose.model(
-  "User",
-  new mongoose.Schema({
-    name: String,
-    email: String,
-  })
-);
-
-// Home page
 app.get("/", (req, res) => {
   res.sendFile(path.join(process.cwd(), "index.html"));
 });
 
-// API
 app.get("/users", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const User = mongoose.model("User", {
+    name: String,
+    email: String,
+  });
+
+  const users = await User.find();
+  res.json(users);
 });
 
-// IMPORTANT for Vercel
 export default app;
