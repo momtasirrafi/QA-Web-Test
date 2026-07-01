@@ -6,8 +6,7 @@ const app = express();
 app.use(express.static("."));
 
 // Connect to MongoDB
-mongoose
-  .connect("mongodb://127.0.0.1:27017/webtesting")
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("✅ MongoDB Connected");
   })

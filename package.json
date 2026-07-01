@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Static QA Command Center app plus live QA agents (plain-fetch smoke test and Playwright-based authenticated crawler).",
   "scripts": {
+    "start": "node server.js",
     "dev": "npx --yes serve .",
     "qa:smoke": "node live-qa-agent.mjs",
     "qa:auth": "node live-qa-agent-auth.mjs",
