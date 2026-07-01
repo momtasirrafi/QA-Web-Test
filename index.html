@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QA Command Center</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg aria-hidden="true" class="icon-sprite">
+      <symbol id="icon-dashboard" viewBox="0 0 24 24"><path d="M4 13h6v7H4zM14 4h6v16h-6zM4 4h6v5H4z" /></symbol>
+      <symbol id="icon-cases" viewBox="0 0 24 24"><path d="M6 3h12v18H6z" /><path d="M9 8h6M9 12h6M9 16h4" /></symbol>
+      <symbol id="icon-runs" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></symbol>
+      <symbol id="icon-bugs" viewBox="0 0 24 24"><path d="M8 8a4 4 0 0 1 8 0v8a4 4 0 0 1-8 0z" /><path d="M4 13h4M16 13h4M5 7l3 2M19 7l-3 2M5 19l3-2M19 19l-3-2M10 4l-1-2M14 4l1-2" /></symbol>
+      <symbol id="icon-agent" viewBox="0 0 24 24"><path d="M12 3v3M7 6h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3z" /><path d="M9 11h.01M15 11h.01M9 15h6" /></symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="icon-save" viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5z" /><path d="M8 4v6h8V4M8 20v-6h8v6" /></symbol>
+      <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3" /></symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16zM13 7l4 4" /></symbol>
+      <symbol id="icon-export" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 15v5h14v-5" /></symbol>
+      <symbol id="icon-import" viewBox="0 0 24 24"><path d="M12 15V3M7 10l5 5 5-5M5 15v5h14v-5" /></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="m16 16 4 4" /></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7" /></symbol>
+      <symbol id="icon-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></symbol>
+    </svg>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Workspace navigation">
+        <div class="brand">
+          <div class="brand-mark">QA</div>
+          <div><strong>QA Command Center</strong><span id="activeProjectName">Project</span></div>
+        </div>
+        <label class="field compact-field"><span>Project</span><select id="projectSelect"></select></label>
+        <nav class="main-nav">
+          <button class="nav-button active" data-view="dashboard"><svg><use href="#icon-dashboard"></use></svg><span>Dashboard</span></button>
+          <button class="nav-button" data-view="cases"><svg><use href="#icon-cases"></use></svg><span>Test Cases</span></button>
+          <button class="nav-button" data-view="runs"><svg><use href="#icon-runs"></use></svg><span>Test Runs</span></button>
+          <button class="nav-button" data-view="defects"><svg><use href="#icon-bugs"></use></svg><span>Defects</span></button>
+          <button class="nav-button" data-view="agent"><svg><use href="#icon-agent"></use></svg><span>QA Agent</span></button>
+          <button class="nav-button" data-view="live"><svg><use href="#icon-runs"></use></svg><span>Live Agent</span></button>
+        </nav>
+        <div class="sidebar-actions">
+          <button id="exportJsonBtn" class="ghost-button"><svg><use href="#icon-export"></use></svg><span>JSON</span></button>
+          <button id="exportCsvBtn" class="ghost-button"><svg><use href="#icon-export"></use></svg><span>CSV</span></button>
+          <label class="ghost-button file-button"><svg><use href="#icon-import"></use></svg><span>Import</span><input id="importInput" type="file" accept="application/json" /></label>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div><p class="eyebrow" id="viewEyebrow">Quality operations</p><h1 id="viewTitle">Dashboard</h1></div>
+          <div class="topbar-actions">
+            <button id="newProjectBtn" class="secondary-button"><svg><use href="#icon-plus"></use></svg><span>Project</span></button>
+            <button id="quickCaseBtn" class="primary-button"><svg><use href="#icon-plus"></use></svg><span>Test Case</span></button>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboardView" aria-labelledby="viewTitle">
+          <div class="metric-grid" id="metricGrid"></div>
+          <div class="dashboard-grid">
+            <section class="panel"><div class="panel-head"><h2>Release Readiness</h2><span class="status-pill" id="readinessPill">Calculating</span></div><div class="readiness-wrap"><div class="score-ring" id="scoreRing"><span>0%</span></div><div class="readiness-list" id="readinessList"></div></div></section>
+            <section class="panel"><div class="panel-head"><h2>Defect Pressure</h2><span class="muted" id="defectPressureLabel">Open defects</span></div><div class="bar-list" id="defectBars"></div></section>
+          </div>
+          <section class="panel"><div class="panel-head"><h2>Current Regression Queue</h2><button class="text-button" data-view-target="runs">Open Runs</button></div><div class="table-wrap"><table><thead><tr><th>Case</th><th>Area</th><th>Priority</th><th>Status</th><th>Last Result</th></tr></thead><tbody id="regressionRows"></tbody></table></div></section>
+        </section>
+
+        <section class="view" id="casesView" aria-labelledby="viewTitle">
+          <div class="toolbar"><label class="search-field"><svg><use href="#icon-search"></use></svg><input id="caseSearch" type="search" placeholder="Search cases" /></label><select id="casePriorityFilter" aria-label="Priority filter"><option value="all">All priorities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select><select id="caseStatusFilter" aria-label="Status filter"><option value="all">All statuses</option><option>Ready</option><option>Draft</option><option>Needs Review</option></select></div>
+          <div class="split-layout"><section class="panel list-panel"><div class="panel-head"><h2>Test Library</h2><span id="caseCount" class="muted">0 cases</span></div><div class="case-list" id="caseList"></div></section><section class="panel editor-panel"><div class="panel-head"><h2 id="caseFormTitle">New Test Case</h2><button id="resetCaseFormBtn" class="icon-button" title="Clear form" aria-label="Clear form"><svg><use href="#icon-x"></use></svg></button></div><form id="caseForm" class="form-grid"><input type="hidden" id="caseId" /><label class="field wide"><span>Title</span><input id="caseTitle" required maxlength="120" /></label><label class="field"><span>Area</span><input id="caseArea" required maxlength="60" /></label><label class="field"><span>Type</span><select id="caseType"><option>Functional</option><option>Regression</option><option>Integration</option><option>Security</option><option>Performance</option><option>Usability</option></select></label><label class="field"><span>Priority</span><select id="casePriority"><option>Critical</option><option>High</option><option selected>Medium</option><option>Low</option></select></label><label class="field"><span>Status</span><select id="caseStatus"><option>Ready</option><option>Draft</option><option>Needs Review</option></select></label><label class="field wide"><span>Steps</span><textarea id="caseSteps" rows="5" required></textarea></label><label class="field wide"><span>Expected Result</span><textarea id="caseExpected" rows="4" required></textarea></label><div class="form-actions wide"><button type="button" id="deleteCaseBtn" class="danger-button hidden"><svg><use href="#icon-trash"></use></svg><span>Delete</span></button><button type="submit" class="primary-button"><svg><use href="#icon-save"></use></svg><span>Save Case</span></button></div></form></section></div>
+        </section>
+
+        <section class="view" id="runsView" aria-labelledby="viewTitle">
+          <div class="runs-layout"><section class="panel"><div class="panel-head"><h2>Run Builder</h2><button id="createRunBtn" class="primary-button"><svg><use href="#icon-plus"></use></svg><span>Create Run</span></button></div><div class="run-builder"><label class="field"><span>Run Name</span><input id="runName" maxlength="90" /></label><div class="checkbox-list" id="runCasePicker"></div></div></section><section class="panel"><div class="panel-head"><h2>Active Runs</h2><span id="runCount" class="muted">0 runs</span></div><div id="runList" class="run-list"></div></section></div>
+          <section class="panel"><div class="panel-head"><h2 id="runDetailTitle">Run Results</h2><div class="segmented-control" id="resultBulk"><button data-result="Passed">Pass</button><button data-result="Failed">Fail</button><button data-result="Blocked">Block</button></div></div><div id="runDetail" class="run-detail"></div></section>
+        </section>
+
+        <section class="view" id="defectsView" aria-labelledby="viewTitle">
+          <div class="split-layout"><section class="panel list-panel"><div class="panel-head"><h2>Defect Board</h2><span id="defectCount" class="muted">0 defects</span></div><div class="kanban" id="defectBoard"></div></section><section class="panel editor-panel"><div class="panel-head"><h2 id="defectFormTitle">Log Defect</h2><button id="resetDefectFormBtn" class="icon-button" title="Clear form" aria-label="Clear form"><svg><use href="#icon-x"></use></svg></button></div><form id="defectForm" class="form-grid"><input type="hidden" id="defectId" /><label class="field wide"><span>Summary</span><input id="defectSummary" required maxlength="120" /></label><label class="field"><span>Severity</span><select id="defectSeverity"><option>Critical</option><option>High</option><option selected>Medium</option><option>Low</option></select></label><label class="field"><span>Status</span><select id="defectStatus"><option>Open</option><option>In Progress</option><option>Ready for Retest</option><option>Closed</option></select></label><label class="field wide"><span>Linked Case</span><select id="defectCase"></select></label><label class="field wide"><span>Actual Result</span><textarea id="defectActual" rows="4" required></textarea></label><label class="field wide"><span>Environment</span><input id="defectEnv" maxlength="90" /></label><div class="form-actions wide"><button type="button" id="deleteDefectBtn" class="danger-button hidden"><svg><use href="#icon-trash"></use></svg><span>Delete</span></button><button type="submit" class="primary-button"><svg><use href="#icon-save"></use></svg><span>Save Defect</span></button></div></form></section></div>
+        </section>
+
+        <section class="view" id="agentView" aria-labelledby="viewTitle">
+          <div class="agent-layout">
+            <section class="panel">
+              <div class="panel-head">
+                <h2>Requirement Analyzer</h2>
+                <div class="agent-controls" style="margin-top:0">
+                  <label class="secondary-button file-button" title="Import a PRD or ticket as .txt or .md"><svg><use href="#icon-import"></use></svg><span>Import PRD/Ticket</span><input id="prdImportInput" type="file" accept=".txt,.md,text/plain,text/markdown" /></label>
+                  <button id="generateSuggestionsBtn" class="primary-button"><svg><use href="#icon-agent"></use></svg><span>Generate</span></button>
+                </div>
+              </div>
+              <label class="field wide"><span>Website / App URL</span><input id="agentTargetUrl" placeholder="https://your-site.com" /><span class="field-hint">Optional. Press Enter to generate. Saved per project and shared with the Live Agent tab below.</span></label>
+              <label class="field wide"><span>Business / App Context</span><textarea id="businessContext" rows="3" placeholder="Tell the agent what the product does, e.g. a men's grooming and spa booking platform with a therapist directory, location search, booking forms, and reviews."></textarea><span class="field-hint">Used to pick more relevant test areas, priorities, and checks.</span></label>
+              <label class="field wide"><span>What do you want to test?</span><textarea id="requirementText" rows="12" placeholder="Describe what you want tested, paste a requirement, or import a PRD/ticket above. Then press Ctrl+Enter (or click Generate)."></textarea><span class="field-hint" id="prdFileName">Press Ctrl+Enter to generate.</span></label>
+              <div class="agent-controls">
+                <label class="field"><span>Depth</span><select id="agentDepth"><option value="lean">Lean</option><option value="balanced" selected>Balanced</option><option value="deep">Deep</option></select></label>
+                <label class="toggle-row"><input type="checkbox" id="includeNegative" checked /><span>Negative tests</span></label>
+                <label class="toggle-row"><input type="checkbox" id="includeSecurity" checked /><span>Security checks</span></label>
+                <label class="toggle-row" title="Only suggest cases for requirements that existing test cases don't already cover"><input type="checkbox" id="coverageGapMode" /><span>Coverage gap mode</span></label>
+              </div>
+            </section>
+            <section class="panel"><div class="panel-head"><h2>Generated Cases</h2><button id="addSuggestionsBtn" class="secondary-button"><svg><use href="#icon-plus"></use></svg><span>Add All</span></button></div><div id="suggestionList" class="suggestion-list"></div></section>
+          </div>
+          <section class="panel"><div class="panel-head"><h2>Requirement Coverage</h2><span class="muted" id="coverageSummary">No PRD parsed yet</span></div><div id="coverageList" class="suggestion-list"></div></section>
+          <section class="panel"><div class="panel-head"><h2>Risk Checklist</h2><span class="muted">Auto-scored from active project</span></div><div class="risk-grid" id="riskGrid"></div></section>
+        </section>
+        <section class="view" id="liveView" aria-labelledby="viewTitle">
+          <div class="agent-layout">
+            <section class="panel">
+              <div class="panel-head"><h2>Live Website Check</h2><button id="copyLiveCommandBtn" class="primary-button"><svg><use href="#icon-save"></use></svg><span>Copy Command</span></button></div>
+              <div class="form-grid">
+                <label class="field wide" id="liveContextWrap"><span>Business Context</span><div class="empty-state" id="liveContextNote">Add a Business / App Context note on the QA Agent tab so checks here are easier to interpret.</div></label>
+                <label class="field wide"><span>Agent Type</span><select id="liveAgentType"><option value="smoke">Quick smoke test (no login)</option><option value="auth">Authenticated browser check (can log in first)</option></select></label>
+                <label class="field wide"><span>Website URL</span><input id="liveUrl" value="https://example.com" placeholder="https://client-site.com" /></label>
+                <label class="field"><span>Pages to check</span><input id="livePages" value="12" /><span class="field-hint">Use a number, or type "all" to crawl the whole site (no limit).</span></label>
+                <label class="field"><span>Report</span><a class="secondary-button report-link" href="qa-live-report.html" target="_blank"><span>Open Report</span></a></label>
+                <label class="field wide"><span>PowerShell Command</span><textarea id="liveCommand" rows="4" readonly></textarea><span class="field-hint">Run this in your project folder, then load the resulting qa-live-report.json on the right. Authenticated checks need a one-time setup — see LIVE_QA_AGENT.md.</span></label>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h2>Report Viewer</h2><label class="secondary-button file-button"><svg><use href="#icon-import"></use></svg><span>Load JSON</span><input id="liveReportInput" type="file" accept="application/json" /></label></div>
+              <div id="liveReportSummary" class="live-report-summary"></div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><h2>What This Agent Does</h2><span class="muted">Live smoke testing</span></div>
+            <div class="risk-grid">
+              <article class="risk-item"><strong>Availability</strong><span class="muted">Checks whether pages and assets respond successfully.</span></article>
+              <article class="risk-item"><strong>Speed</strong><span class="muted">Flags slow page and asset responses.</span></article>
+              <article class="risk-item"><strong>Security Basics</strong><span class="muted">Looks for important HTTP security headers.</span></article>
+              <article class="risk-item"><strong>Page Health</strong><span class="muted">Finds missing titles, viewport tags, and simple form risks.</span></article>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

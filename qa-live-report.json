@@ -1,0 +1,135 @@
+{
+  "startUrl": "https://pos.codeseye.com/dashboard,https://pos.codeseye.com/orders,https://pos.codeseye.com/products,https://pos.codeseye.com/reports,https://pos.codeseye.com/users,https://pos.codeseye.com/settings",
+  "authenticated": true,
+  "checkedAt": "2026-07-01T04:50:18.967Z",
+  "score": 60,
+  "pages": [
+    {
+      "url": "https://pos.codeseye.com/dashboard,https://pos.codeseye.com/orders,https://pos.codeseye.com/products,https://pos.codeseye.com/reports,https://pos.codeseye.com/users,https://pos.codeseye.com/settings",
+      "status": 404,
+      "responseMs": 634,
+      "title": "Not Found",
+      "linkCount": 1,
+      "brokenImageCount": 0,
+      "consoleErrors": 1
+    },
+    {
+      "url": "https://pos.codeseye.com/about",
+      "status": 200,
+      "responseMs": 642,
+      "title": "About Us",
+      "linkCount": 2,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/contact",
+      "status": 200,
+      "responseMs": 634,
+      "title": "Contact Us",
+      "linkCount": 2,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/",
+      "status": 200,
+      "responseMs": 1108,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/login",
+      "status": 200,
+      "responseMs": 662,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 1
+    },
+    {
+      "url": "https://pos.codeseye.com/#forgot",
+      "status": 200,
+      "responseMs": 826,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/#login-with-email-link",
+      "status": 0,
+      "responseMs": 3,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/#login",
+      "status": 0,
+      "responseMs": 3,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/login#forgot",
+      "status": 200,
+      "responseMs": 856,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 1
+    },
+    {
+      "url": "https://pos.codeseye.com/login#login-with-email-link",
+      "status": 0,
+      "responseMs": 3,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    },
+    {
+      "url": "https://pos.codeseye.com/login#login",
+      "status": 0,
+      "responseMs": 3,
+      "title": "Login",
+      "linkCount": 4,
+      "brokenImageCount": 0,
+      "consoleErrors": 0
+    }
+  ],
+  "issues": [
+    {
+      "level": "critical",
+      "url": "https://pos.codeseye.com/dashboard,https://pos.codeseye.com/orders,https://pos.codeseye.com/products,https://pos.codeseye.com/reports,https://pos.codeseye.com/users,https://pos.codeseye.com/settings",
+      "message": "Page returned HTTP 404"
+    },
+    {
+      "level": "warning",
+      "url": "https://pos.codeseye.com/dashboard,https://pos.codeseye.com/orders,https://pos.codeseye.com/products,https://pos.codeseye.com/reports,https://pos.codeseye.com/users,https://pos.codeseye.com/settings",
+      "message": "Console error: Failed to load resource: the server responded with a status of 404 (NOT FOUND)"
+    },
+    {
+      "level": "warning",
+      "url": "https://pos.codeseye.com/login",
+      "message": "Console error: Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED)"
+    },
+    {
+      "level": "warning",
+      "url": "https://pos.codeseye.com/login#forgot",
+      "message": "Console error: Failed to load resource: the server responded with a status of 401 (UNAUTHORIZED)"
+    }
+  ],
+  "summary": {
+    "pagesChecked": 11,
+    "criticalIssues": 1,
+    "warnings": 3,
+    "averageResponseMs": 489
+  }
+}

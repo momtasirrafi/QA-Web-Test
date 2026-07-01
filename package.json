@@ -1,0 +1,18 @@
+{
+  "name": "qa-command-center-web-testing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static QA Command Center app plus live QA agents (plain-fetch smoke test and Playwright-based authenticated crawler).",
+  "scripts": {
+    "dev": "npx --yes serve .",
+    "qa:smoke": "node live-qa-agent.mjs",
+    "qa:auth": "node live-qa-agent-auth.mjs",
+    "playwright:install": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.7.3",
+    "playwright": "^1.61.1"
+  }
+}

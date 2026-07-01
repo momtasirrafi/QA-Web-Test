@@ -1,0 +1,7 @@
+{
+  "loginUrl": "https://your-site.com/login",
+  "usernameSelector": "#email",
+  "passwordSelector": "#password",
+  "submitSelector": "button[type=submit]",
+  "successSelector": ".dashboard, [data-testid=account-menu]"
+}

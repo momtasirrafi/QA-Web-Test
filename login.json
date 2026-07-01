@@ -1,0 +1,1 @@
+{"loginUrl":"https://pos.codeseye.com/login","usernameSelector":"#login_email","passwordSelector":"#login_password","submitSelector":"button[type=submit]","successSelector":".dashboard,.sidebar,nav,main"} 
